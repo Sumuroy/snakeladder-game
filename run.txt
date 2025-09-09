@@ -1,0 +1,66 @@
+ ========= FLASK BACKEND SETUP =========
+
+1. Create virtual environment 
+python -m venv venv
+
+ 2. Activate the virtual environment On Windows:
+venv\Scripts\activate
+
+3. Install required Python packages
+pip install flask flask-cors
+
+4.Create requirements.txt to track dependencies
+pip freeze > requirements.txt
+
+5. Run the Flask backend
+ Assuming your main file is app.py
+python app.py
+
+
+========= REACT FRONTEND SETUP =========
+
+1. Create React app (if not already created)
+npx create-react-app snake-ladder-frontend
+
+ 2. Move into the project folder
+cd snake-ladder-frontend
+
+3. Install any extra dependencies if needed (optional)
+For sound or icons:
+npm install howler react-icons
+
+4. Start the React development server
+npm start
+
+
+========= FRONTEND DEVELOPMENT STRUCTURE =========
+ Your folder should look like this:
+snake-ladder-frontend/
+├── public/
+├── src/
+│   ├── App.js
+│   ├── Board.js
+│   ├── styles.css
+│   └── ...
+├── package.json
+└── ...
+
+========= FULL RUN SEQUENCE (IN TWO TERMINALS) =========
+
+Terminal 1 (Backend)
+cd path/to/your/backend
+venv\Scripts\activate     
+python app.py
+
+Terminal 2 (Frontend)
+cd snake-ladder-frontend
+npm start
+
+========= OPTIONAL (FOR DEPLOYMENT) =========
+
+1. Build frontend for production
+npm run build
+
+2. Serve build with Flask (if integrating)
+Move build folder into your Flask static/ directory and update Flask routes accordingly.
+

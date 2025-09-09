@@ -1,0 +1,100 @@
+/* General container styling */
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f0f8ff;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(161, 118, 207, 0.1);
+}
+
+/* Game title */
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #1d3557;
+}
+
+/* Start screen */
+.start-screen {
+  margin-top: 40px;
+}
+
+.start-screen h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.start-screen button {
+  padding: 12px 28px;
+  font-size: 1.2rem;
+  background-color: #2b8a3e;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.start-screen button:hover {
+  background-color: #24732f;
+}
+
+/* Turn message and controls */
+.turn-message {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  color: #444;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0 20px;
+}
+
+/* Mute button */
+.controls button {
+  padding: 8px 14px;
+  font-size: 1rem;
+  border: none;
+  background-color: #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.controls button:hover {
+  background-color: #aaa;
+}
+
+/* Dice display */
+.dice-display {
+  font-size: 2.5rem;
+  margin: 10px 0 20px;
+}
+
+/* Roll dice button */
+button {
+  padding: 12px 28px;
+  font-size: 1.1rem;
+  background-color: #1d3557;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #16324f;
+}
