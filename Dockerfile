@@ -7,15 +7,12 @@ WORKDIR /app
 # Copy all files
 COPY . .
 
-# If you have package.json, install dependencies
-# RUN npm install
+# Install http-server globally for serving static files
+RUN npm install -g http-server
 
-# Expose port (adjust if your game uses different port)
+# Expose port
 EXPOSE 3000
 
-# Start the application
-# Adjust this command based on how your snake ladder game starts
-CMD ["node", "index.js"]
-
-# If it's an HTML game, use a simple web server:
-# CMD ["npx", "http-server", ".", "-p", "3000"]
+# Start a simple HTTP server
+# This will serve your HTML/JS game files
+CMD ["http-server", ".", "-p", "3000", "-a", "0.0.0.0"]
