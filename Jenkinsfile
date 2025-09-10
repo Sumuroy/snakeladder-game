@@ -32,11 +32,17 @@ pipeline {
                     def imageName = "snakeladder-game:${BUILD_NUMBER}"
                     def latestImage = "snakeladder-game:latest"
                     
-                    // Build the Docker image
-                    docker.build(imageName)
-                    
-                    // Also tag as latest
-                    docker.build(latestImage)
+                    if (isUnix()) {
+                        // Build with build number tag
+                        sh "docker build -t ${imageName} ."
+                        // Tag the same image as latest
+                        sh "docker tag ${imageName} ${latestImage}"
+                    } else {
+                        // Build with build number tag
+                        bat "docker build -t ${imageName} ."
+                        // Tag the same image as latest
+                        bat "docker tag ${imageName} ${latestImage}"
+                    }
                     
                     echo "✅ Docker image built: ${imageName}"
                 }
@@ -47,11 +53,42 @@ pipeline {
             steps {
                 echo '🧪 Testing if Docker image works...'
                 script {
-                    // Test that the image can run
-                    docker.image("snakeladder-game:latest").withRun('-p 3001:3000') { container ->
-                        echo '⏳ Container started, testing...'
-                        sleep 5
-                        echo '✅ Docker image test completed!'
+                    def containerName = "snakeladder-test-${BUILD_NUMBER}"
+                    
+                    try {
+                        if (isUnix()) {
+                            // Start container
+                            sh "docker run -d --name ${containerName} -p 3001:3000 snakeladder-game:latest"
+                            echo '⏳ Container started, testing...'
+                            sleep 5
+                            
+                            // Check if container is still running
+                            sh "docker ps | grep ${containerName}"
+                            echo '✅ Docker image test completed!'
+                            
+                        } else {
+                            // Start container
+                            bat "docker run -d --name ${containerName} -p 3001:3000 snakeladder-game:latest"
+                            echo '⏳ Container started, testing...'
+                            sleep 5
+                            
+                            // Check if container is still running
+                            bat "docker ps | findstr ${containerName}"
+                            echo '✅ Docker image test completed!'
+                        }
+                        
+                    } catch (Exception e) {
+                        echo "❌ Test failed: ${e.getMessage()}"
+                        throw e
+                    } finally {
+                        // Always clean up test container
+                        if (isUnix()) {
+                            sh "docker stop ${containerName} || true"
+                            sh "docker rm ${containerName} || true"
+                        } else {
+                            bat "docker stop ${containerName} || exit 0"
+                            bat "docker rm ${containerName} || exit 0"
+                        }
                     }
                 }
             }
@@ -93,6 +130,17 @@ pipeline {
     post {
         always {
             echo '🏁 Pipeline finished!'
+            // Clean up any leftover test containers
+            script {
+                def containerName = "snakeladder-test-${BUILD_NUMBER}"
+                if (isUnix()) {
+                    sh "docker stop ${containerName} || true"
+                    sh "docker rm ${containerName} || true"
+                } else {
+                    bat "docker stop ${containerName} || exit 0"
+                    bat "docker rm ${containerName} || exit 0"
+                }
+            }
         }
         success {
             echo '🎉 SUCCESS! Your Snake Ladder game is deployed!'
